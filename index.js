@@ -29,6 +29,11 @@ var getContent = function(url, cb){
 			content = content.replace(/\n|\r/gm, '');
 			
 			// 文章内容
+			if(!/<div id\=\"ctrlfscont\">(.*?)<\/div>/m.test(content)){
+				console.log('此新闻是图集，跳过');
+				if('function' == typeof cb) cb.call(null, new Error('Imageset'));
+				return;
+			}
 			var body = content.match(/<div id\=\"ctrlfscont\">(.*?)<\/div>/m)[1].trim();
 			
 			// 标题
